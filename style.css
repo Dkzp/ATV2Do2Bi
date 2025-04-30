@@ -1,0 +1,1284 @@
+/**
+ * =============================================================================
+ * CSS - Majestic Void Style v1.1 (Lighter & Gold Border)
+ * =============================================================================
+ *
+ * @version 1.1
+ * @description Estilo visual coeso para uma interface com tema futurista/espacial,
+ *              apelidado de "Majestic Void". Esta versão (1.1) refina o tema
+ *              com uma paleta ligeiramente mais clara ("Lighter") e introduz
+ *              uma distinta borda dourada ("Gold Border") em elementos-chave,
+ *              notavelmente na área de exibição principal do veículo, para
+ *              destaque e uma sensação premium.
+ *
+ * OBJETIVO VISUAL:
+ * - Criar uma atmosfera imersiva e sofisticada, combinando a profundidade do
+ *   "vazio" (tons muito escuros, quase pretos com toques de roxo/azul) com
+ *   pontos de luz e energia (dourado vibrante, branco/azul pálido).
+ * - Utilizar o efeito "glassmorphism" (vidro fosco) de forma sutil para
+ *   organizar a interface em camadas e adicionar profundidade, usando
+ *   backgrounds semi-transparentes, bordas finas e desfoque de fundo.
+ * - Empregar tipografia clara e moderna: 'Orbitron' para títulos de impacto
+ *   (Sci-Fi) e 'Poppins' para excelente legibilidade no corpo do texto.
+ * - Garantir clareza na interatividade com feedback visual consistente em
+ *   hovers, cliques e estados ativos/inativos.
+ * - Manter um design limpo e organizado, apesar da temática potencialmente complexa.
+ *
+ * ESTRUTURA DO ARQUIVO:
+ * 0. Meta e Fontes: Dependências externas (Google Fonts).
+ * 1. Variáveis CSS Globais: O coração do tema, definindo a paleta, tipografia e métricas.
+ * 2. Reset e Estilos Globais: Base para consistência visual em toda a aplicação.
+ * 3. Layout Principal: Estrutura central da interface (o container "monólito").
+ * 4. Tipografia: Hierarquia visual e legibilidade do texto.
+ * 5. Abas de Navegação: Componente primário de navegação entre seções.
+ * 6. Seções Principais: Gerenciamento da visibilidade e transição do conteúdo.
+ * 7. Menu Dinâmico de Veículos: Seletores interativos para escolher um veículo.
+ * 8. Área de Exibição do Veículo: O palco principal, destacando o veículo selecionado (com a borda dourada).
+ * 9 & 10. Colunas, Cards e Componentes: Módulos de UI para exibir informações e ações.
+ * 11. Seção Adicionar Veículo: Estilização específica da área de entrada de dados.
+ * 12. Notificações e Alertas: Feedback visual para o usuário (informativo e de erro).
+ * 13. Formulários: Estilização detalhada para todos os elementos de formulário, garantindo usabilidade e consistência visual.
+ * 14. Botões: Definição dos diferentes tipos de botões e seus estados.
+ * 15. Histórico e Agendamentos: Apresentação de listas de dados (logs).
+ * 16. Responsividade: Adaptação do layout para diferentes tamanhos de tela.
+ */
+
+/* ===== 0. Meta e Fontes ===== */
+/* Importa as fontes necessárias do Google Fonts.
+   - 'Poppins': Escolhida pela sua versatilidade e excelente legibilidade em interfaces digitais, usada para o corpo do texto e elementos de UI gerais.
+   - 'Orbitron': Uma fonte display com forte apelo Sci-Fi/tecnológico, usada para títulos principais (H1, H2) para reforçar a identidade visual do tema. */
+   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap'); /* Fonte Sci-Fi para Títulos Principais */
+   
+   /* ===== 1. Variáveis CSS Globais (Tema Majestic Void - Ajustado) ===== */
+   /* Define as bases visuais do tema usando variáveis CSS para fácil manutenção e consistência.
+      Qualquer ajuste global de cor, espaçamento ou fonte deve ser feito aqui. */
+   :root {
+       /* --- Paleta de Cores: O Núcleo do "Majestic Void" --- */
+       /* Tons do Vazio (Base Escura): Criam a sensação de profundidade e espaço. */
+       --color-void-deep: #020104; /* Base mais escura, quase preta, para fundos principais. */
+       --color-void-near: #0a0810; /* Tom ligeiramente mais claro com nuance roxa/azul, usado em gradientes para adicionar sutileza. (v1.1: um pouco mais claro) */
+       /* Acentos (Contraste e Energia): Dão vida e hierarquia à interface. */
+       --accent-gold: #ffb700;      /* Dourado/Laranja vibrante: Cor primária de destaque para CTAs, links, e elementos importantes (como a nova borda). (v1.1: ligeiramente mais vivo) */
+       --accent-light: #e8ecf5;   /* Branco/Azul pálido: Cor secundária clara para textos principais, bordas sutis e highlights secundários. (v1.1: ligeiramente mais brilhante) */
+       --accent-danger: #ff5555;     /* Vermelho: Usado exclusivamente para indicar erros, alertas críticos ou ações destrutivas (exclusão). */
+       --accent-info: #55aaff;      /* Azul: Usado para informações neutras, notificações e alguns destaques secundários. */
+   
+       /* --- Efeito "Glassmorphism" (Vidro do Vazio) --- */
+       /* Define as propriedades para simular painéis de vidro fosco flutuando sobre o fundo. (v1.1: mais sutil e claro) */
+       --glass-bg: rgba(15, 12, 25, 0.55); /* Fundo do painel: Roxo escuro semi-transparente (mais claro/transparente que antes). */
+       --glass-border: rgba(224, 229, 240, 0.2); /* Borda do painel: Clara e sutil, define a forma do "vidro" (mais visível que antes). */
+       --glass-shadow: rgba(0, 0, 0, 0.5);    /* Sombra Externa: Profunda, para dar a sensação de que o painel flutua sobre o fundo. */
+       --inner-shadow-light: rgba(224, 229, 240, 0.07); /* Sombra Interna: Simula um leve brilho na borda interna superior do painel (mais visível que antes). */
+   
+       /* --- Tipografia e Cores de Texto --- */
+       /* Garante legibilidade e hierarquia no conteúdo textual. */
+       --text-primary: var(--accent-light);    /* Cor principal para a maioria dos textos. */
+       --text-secondary: #9ca7c1;             /* Cinza-azulado clareado: Para textos de menor importância, placeholders, labels. */
+       --text-highlight: var(--accent-gold);   /* Cor para links e outros textos que precisam de destaque. */
+       --text-on-accent: #000000;            /* Preto: Para garantir contraste e legibilidade sobre fundos dourados (botões primários). */
+       --text-on-danger: #ffffff;            /* Branco: Para garantir contraste sobre fundos vermelhos (botões de perigo no hover). */
+   
+       /* --- Efeitos de Brilho (Glow) --- */
+       /* Usados em `text-shadow` e `box-shadow` para adicionar um toque energético e futurista. */
+       --glow-gold: 0 0 18px rgba(255, 183, 0, 0.65); /* Brilho associado ao acento dourado (um pouco mais forte). */
+       --glow-light: 0 0 15px rgba(232, 236, 245, 0.25);/* Brilho sutil associado ao acento claro. */
+       --glow-danger: 0 0 15px rgba(255, 85, 85, 0.65); /* Brilho associado ao acento vermelho. */
+       --glow-info: 0 0 15px rgba(85, 170, 255, 0.55);  /* Brilho associado ao acento azul. */
+   
+       /* --- Métricas e Estilos Gerais --- */
+       /* Controlam o espaçamento, forma e timing da interface. */
+       --font-family-body: 'Poppins', sans-serif;
+       --font-family-heading: 'Orbitron', sans-serif;
+       --base-font-size: 16px;                      /* Tamanho de fonte base para cálculos relativos (em). */
+       --border-radius-main: 18px;                  /* Arredondamento principal (container) - mais suave (v1.1: um pouco maior). */
+       --border-radius-elements: 12px;              /* Arredondamento para elementos menores (botões, inputs, cards). */
+       --backdrop-blur: 10px;                       /* Intensidade do desfoque de fundo para o efeito glassmorphism (v1.1: um pouco maior). */
+       --transition-smooth: 0.3s ease-out;          /* Transição padrão para efeitos de hover e mudanças suaves. */
+       --transition-snap: 0.2s ease-in-out;         /* Transição mais rápida para feedback instantâneo (ex: clique). */
+   }
+   
+   /* ===== 2. Reset e Estilos Gerais ===== */
+   /* Garante uma base consistente removendo estilos padrão do navegador e definindo padrões globais. */
+   *, *::before, *::after {
+       box-sizing: border-box; /* Modelo de caixa mais intuitivo para layout. */
+       margin: 0;              /* Remove margens padrão. */
+       padding: 0;             /* Remove paddings padrão. */
+   }
+   html {
+       scroll-behavior: smooth; /* Rolagem suave ao navegar por links internos (#). */
+   }
+   body {
+       /* Configurações Fundamentais */
+       font-family: var(--font-family-body);      /* Fonte padrão para todo o corpo. */
+       font-size: var(--base-font-size);          /* Tamanho de fonte base. */
+       line-height: 1.65;                         /* Espaçamento entre linhas otimizado para leitura. */
+       color: var(--text-primary);                /* Cor de texto padrão. */
+       min-height: 100vh;                         /* Garante que o body ocupe toda a altura da viewport. */
+       overflow-x: hidden;                        /* Previne scroll horizontal acidental. */
+       -webkit-font-smoothing: antialiased;       /* Melhora a renderização de fontes em macOS/iOS. */
+       -moz-osx-font-smoothing: grayscale;        /* Melhora a renderização de fontes em Firefox no macOS. */
+   
+       /* Fundo Visual */
+       background-color: var(--color-void-deep); /* Cor sólida de fallback. */
+       /* Gradiente sutil que adiciona profundidade ao fundo, indo de um roxo/azul escuro para quase preto. */
+       background-image: linear-gradient(170deg, var(--color-void-near) 0%, var(--color-void-deep) 70%);
+       background-attachment: fixed;              /* Mantém o gradiente fixo durante a rolagem. */
+       padding: 40px;                             /* Espaçamento geral ao redor do conteúdo principal (ajustado em media queries). */
+   }
+   body::before { display: none; } /* Garante a remoção de um possível efeito de estrelas de versões anteriores. */
+   
+   /* ===== 3. Layout Principal (Container - Monólito Refinado) ===== */
+   /* Estiliza o container principal (`#container`), que age como a "janela" central da interface,
+      aplicando o efeito de vidro de forma proeminente. */
+   #container {
+       max-width: 1280px;                     /* Limita a largura para melhor legibilidade em telas grandes. */
+       margin: 60px auto;                     /* Centraliza horizontalmente e adiciona espaço vertical. */
+       border-radius: var(--border-radius-main); /* Bordas suaves e arredondadas. */
+       padding: 50px 60px;                    /* Espaçamento interno generoso para o conteúdo. */
+       position: relative;                    /* Necessário para `backdrop-filter` e posicionamento interno. */
+       overflow: hidden;                      /* Garante que o conteúdo não vaze pelas bordas arredondadas e esconde partes do efeito blur. */
+   
+       /* Efeito Glassmorphism Detalhado */
+       background: var(--glass-bg);             /* Fundo semi-transparente que permite ver o gradiente do body por baixo. */
+       border: 1px solid var(--glass-border);   /* Borda fina e clara que define os limites do painel. */
+       /* Sombra composta:
+          1. Sombra externa (`var(--glass-shadow)`): Cria a ilusão de profundidade, fazendo o painel "flutuar".
+          2. Sombra interna (`var(--inner-shadow-light)`): Adiciona um brilho sutil na borda superior interna, simulando reflexo no vidro. */
+       box-shadow: 0 20px 60px 10px var(--glass-shadow),
+                   inset 0 0 10px var(--inner-shadow-light);
+       /* O coração do glassmorphism: desfoca o conteúdo que está *atrás* do container. */
+       backdrop-filter: blur(var(--backdrop-blur));
+       -webkit-backdrop-filter: blur(var(--backdrop-blur)); /* Prefixo para compatibilidade com Safari. */
+   }
+   
+   /* ===== 4. Tipografia (Clara e Estruturada) ===== */
+   /* Define estilos para elementos textuais, criando hierarquia visual e garantindo legibilidade. */
+   
+   /* Estilos base para todos os cabeçalhos (h1-h4) */
+   h1, h2, h3, h4 {
+       font-weight: 500;                 /* Peso padrão para cabeçalhos (exceto H1). */
+       color: var(--text-primary);       /* Cor padrão (clara). */
+       margin-bottom: 0.8em;             /* Espaçamento inferior padrão. */
+       letter-spacing: 1px;              /* Leve espaçamento entre letras para clareza. */
+   }
+   
+   /* H1: Título Principal da Página */
+   h1 {
+       font-family: var(--font-family-heading); /* Fonte Orbitron para impacto visual. */
+       text-align: center;                 /* Centralizado. */
+       margin-bottom: 1.6em;               /* Maior espaçamento inferior para destaque. */
+       font-size: 2.8em;                   /* Tamanho grande. */
+       font-weight: 700;                   /* Mais peso para máxima proeminência. */
+       letter-spacing: 3px;                /* Maior espaçamento entre letras. */
+       text-shadow: var(--glow-light);     /* Efeito de brilho sutil para reforçar o tema. (v1.1: mais visível) */
+   }
+   h1 i { /* Ícone dentro do H1 */
+       color: var(--accent-gold);          /* Cor dourada para destaque. */
+       margin-right: 20px;                 /* Espaçamento antes do texto. */
+       text-shadow: var(--glow-gold);      /* Brilho dourado no ícone. */
+   }
+   
+   /* H2: Títulos de Seção */
+   h2 {
+       font-family: var(--font-family-heading); /* Fonte Orbitron. */
+       font-size: 2.1em;                   /* Tamanho grande, mas menor que H1. */
+       margin-bottom: 1em;
+       padding-bottom: 0.5em;              /* Espaço antes da borda. */
+       border-bottom: 2px solid var(--glass-border); /* Linha separadora sutil. */
+       display: flex;                      /* Permite alinhar texto e ícone lado a lado. */
+       align-items: center;                /* Alinhamento vertical do ícone com o texto. */
+       gap: 15px;                          /* Espaço entre o ícone (se houver) e o texto. */
+       letter-spacing: 2px;
+   }
+   h2 i { /* Ícone dentro do H2 */
+       color: var(--accent-light);         /* Cor clara padrão. */
+       font-size: 0.85em;                  /* Tamanho relativo ao H2. */
+       text-shadow: none;                  /* Sem brilho para não competir com o título. */
+   }
+   
+   /* H3: Subtítulos / Títulos de Cards */
+   h3 {
+       font-size: 1.6em;                   /* Tamanho médio. */
+       font-weight: 500;
+       color: var(--text-primary);
+       margin-bottom: 1em;
+       display: flex;
+       align-items: center;
+       gap: 12px;
+       border-left: 4px solid var(--accent-gold); /* **Destaque visual:** Barra dourada à esquerda. */
+       padding-left: 15px;                 /* Espaço após a barra dourada. */
+   }
+   h3 i { /* Ícone dentro do H3 */
+       color: var(--accent-gold);          /* Cor dourada. */
+       font-size: 0.9em;
+       text-shadow: var(--glow-gold);      /* Brilho dourado. */
+   }
+   
+   /* H4: Títulos Menores / Labels de Seção */
+   h4 {
+       font-size: 1.2em;                   /* Tamanho menor. */
+       color: var(--text-secondary);       /* Cor secundária para menor ênfase. */
+       margin-bottom: 1.2em;
+       font-weight: 400;                   /* Peso mais leve. */
+       display: flex;
+       align-items: center;
+       gap: 10px;
+       padding-left: 0;                    /* Sem padding extra. */
+   }
+   h4 i { /* Ícone dentro do H4 */
+       color: var(--text-secondary);       /* Cor secundária, consistente com o texto. */
+       font-size: 0.9em;
+   }
+   
+   /* Parágrafos */
+   p {
+       margin-bottom: 1.3em;               /* Espaçamento inferior para separar blocos de texto. */
+       color: var(--text-secondary);       /* Cor secundária para textos descritivos. */
+       line-height: 1.7;                   /* Maior espaçamento entre linhas para conforto na leitura. */
+   }
+   
+   /* Links */
+   a {
+       color: var(--accent-gold);          /* Cor dourada para fácil identificação. */
+       text-decoration: none;              /* Remove sublinhado padrão. */
+       transition: color var(--transition-smooth), text-shadow var(--transition-smooth); /* Transição suave no hover. */
+       text-shadow: 0 0 8px rgba(255, 183, 0, 0.4); /* Leve brilho dourado constante. (v1.1: mais forte) */
+   }
+   a:hover {
+       /* Clareia a cor dourada no hover para feedback visual. */
+       color: color-mix(in srgb, var(--accent-gold) 80%, white);
+       text-shadow: var(--glow-gold);      /* Intensifica o brilho dourado no hover. */
+   }
+   
+   /* ===== 5. Abas de Navegação (Interface Limpa) ===== */
+   /* Estiliza o componente principal de navegação, permitindo alternar entre seções. */
+   #abas-navegacao {
+       text-align: center;                 /* Centraliza os botões das abas. */
+       margin-bottom: 50px;                /* Espaço antes do conteúdo da seção. */
+       padding-bottom: 20px;               /* Espaço antes da linha separadora. */
+       border-bottom: 1px solid var(--glass-border); /* Linha sutil que separa as abas do conteúdo. */
+       position: relative;                 /* Contexto para futuros pseudo-elementos, se necessário. */
+   }
+   #abas-navegacao::after { display: none; } /* Limpeza de estilos legados. */
+   
+   /* Botões individuais das abas */
+   #abas-navegacao button {
+       /* Reset de Botão e Aparência Base */
+       background: transparent;            /* Fundo transparente por padrão. */
+       border: none;                       /* Sem borda geral. */
+       border-bottom: 3px solid transparent; /* Borda inferior invisível, será colorida no estado ativo/hover. */
+       color: var(--text-secondary);       /* Cor secundária para abas inativas. */
+       cursor: pointer;                    /* Indica interatividade. */
+   
+       /* Espaçamento e Tipografia */
+       padding: 15px 30px;                 /* Área clicável generosa. */
+       margin: 0 10px;                     /* Espaçamento horizontal entre abas. */
+       font-size: 1.1em;
+       font-weight: 500;
+       font-family: var(--font-family-body);
+       letter-spacing: 1px;
+       text-transform: uppercase;          /* Estilo visual para abas. */
+   
+       /* Interação e Transição */
+       transition: color var(--transition-smooth), border-color var(--transition-smooth); /* Anima cor e borda suavemente. */
+       position: relative;                 /* Para posicionamento de pseudo-elementos (removidos) ou futuros efeitos. */
+       overflow: hidden;                   /* Esconde efeitos que possam transbordar. */
+   }
+   #abas-navegacao button::before { display: none; } /* Limpeza de estilos legados. */
+   
+   /* Estado Hover da Aba */
+   #abas-navegacao button:hover {
+       color: var(--text-primary);         /* Texto fica mais claro. */
+       border-bottom-color: var(--glass-border); /* Borda inferior aparece com a cor de vidro sutil. */
+   }
+   
+   /* Estado Ativo da Aba (.aba-ativa) */
+   #abas-navegacao button.aba-ativa {
+       color: var(--text-primary);         /* Texto claro e proeminente. */
+       border-bottom-color: var(--accent-gold); /* **Destaque Principal:** Borda inferior dourada indica a aba selecionada. */
+       font-weight: 600;                   /* Texto em negrito para reforçar o estado ativo. */
+       text-shadow: var(--glow-gold);      /* Adiciona brilho dourado ao texto da aba ativa. */
+   }
+   
+   /* Ícones dentro das Abas */
+   #abas-navegacao button i {
+       margin-right: 10px;                 /* Espaço entre o ícone e o texto da aba. */
+       transition: transform var(--transition-snap); /* Animação rápida de transformação. */
+   }
+   #abas-navegacao button:hover i {
+       transform: translateY(-2px);        /* Leve movimento para cima no hover para feedback sutil. */
+   }
+   
+   /* ===== 6. Seções Principais (Fade Sutil) ===== */
+   /* Controla a exibição e transição das áreas de conteúdo que são alternadas pelas abas. */
+   .secao-principal {
+       display: none;                      /* Oculta as seções por padrão. */
+       opacity: 0;                         /* Começa totalmente transparente. */
+       transform: translateY(15px);        /* Começa ligeiramente deslocada para baixo. */
+       /* Anima a opacidade e a posição suavemente quando a seção se torna ativa. */
+       transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+   }
+   .secao-principal.ativa {
+       display: block;                     /* Torna a seção visível. */
+       opacity: 1;                         /* Torna totalmente opaca. */
+       transform: translateY(0);           /* Move para a posição original. */
+   }
+   
+   /* ===== 7. Menu Dinâmico de Veículos (Seletores de Módulo) ===== */
+   /* Estiliza a área onde os botões para selecionar veículos disponíveis são exibidos (geralmente carregados dinamicamente). */
+   #menu-veiculos {
+       /* Layout Flexbox para alinhar botões */
+       display: flex;
+       flex-wrap: wrap;                    /* Permite que os botões quebrem linha em telas menores. */
+       justify-content: center;            /* Centraliza os botões horizontalmente. */
+       gap: 15px;                          /* Espaçamento entre os botões. */
+   
+       /* Espaçamento e Decoração */
+       margin-bottom: 40px;                /* Espaço antes da área de exibição do veículo. */
+       padding-bottom: 30px;               /* Espaço antes da linha separadora. */
+       border-bottom: 1px dashed var(--glass-border); /* Linha tracejada sutil como separador visual. */
+       min-height: 60px;                   /* Altura mínima para evitar colapso visual se estiver vazio ou carregando. */
+   }
+   
+   /* Botões individuais de seleção de veículo */
+   #menu-veiculos button {
+       /* Aparência Sutil e Limpa */
+       background: rgba(5, 3, 10, 0.3);    /* Fundo escuro semi-transparente, discreto. */
+       border: 1px solid var(--glass-border); /* Borda padrão de vidro. */
+       color: var(--text-secondary);       /* Texto secundário por padrão. */
+       padding: 10px 22px;                 /* Padding interno. */
+       font-size: 0.95em;                  /* Tamanho de fonte ligeiramente menor. */
+       border-radius: var(--border-radius-elements); /* Cantos arredondados padrão. */
+       box-shadow: none;                   /* Sem sombra para um visual mais flat. */
+       backdrop-filter: none;              /* Sem desfoque neste nível para simplicidade. */
+       -webkit-backdrop-filter: none;
+       font-family: var(--font-family-body);
+       text-transform: none;               /* Texto normal (não uppercase). */
+       letter-spacing: 0.5px;
+       transition: all var(--transition-smooth); /* Transição suave para todas as propriedades. */
+       cursor: pointer;
+   }
+   
+   /* Estado Hover do botão de veículo */
+   #menu-veiculos button:hover {
+       background: rgba(232, 236, 245, 0.15); /* Fundo claro semi-transparente indica foco. */
+       color: var(--text-primary);         /* Texto fica primário. */
+       border-color: var(--accent-light);  /* Borda fica mais clara. */
+       transform: none;                    /* Remove qualquer transform residual. */
+       box-shadow: none;
+   }
+   
+   /* Estado Ativo do botão de veículo (.veiculo-ativo) */
+   #menu-veiculos button.veiculo-ativo {
+       background: var(--accent-gold);     /* **Destaque:** Fundo dourado sólido indica seleção. */
+       color: var(--text-on-accent);       /* Texto preto para contraste com o dourado. */
+       font-weight: 600;                   /* Negrito para reforçar seleção. */
+       border-color: var(--accent-gold);   /* Borda dourada consistente. */
+       box-shadow: var(--glow-gold);       /* Adiciona brilho dourado para ênfase. */
+       transform: none;
+   }
+   #menu-veiculos button.veiculo-ativo i { /* Ícone no botão ativo */
+       color: var(--text-on-accent);       /* Ícone também fica preto. */
+   }
+   
+   /* Placeholders (Carregando/Vazio) */
+   #menu-veiculos span.loading-placeholder,
+   #menu-veiculos span.empty-placeholder {
+       color: var(--text-secondary);       /* Texto informativo secundário. */
+       font-style: italic;                 /* Itálico para diferenciar do conteúdo normal. */
+       padding: 15px;
+       display: block;                     /* Ocupa a largura total. */
+       text-align: center;
+       font-size: 1em;
+       width: 100%;                        /* Garante que o span ocupe todo o espaço disponível. */
+   }
+   #menu-veiculos span i { /* Ícone dentro do placeholder (ex: spinner de loading) */
+       margin-left: 8px;
+       color: var(--accent-info);          /* Cor azul informativa. */
+       /* A animação 'spin' deve ser definida em outro lugar ou aqui via @keyframes */
+       animation: spin 2s linear infinite;
+   }
+   /* Definição da animação de rotação (se não estiver definida globalmente) */
+   @keyframes spin {
+       from { transform: rotate(0deg); }
+       to { transform: rotate(360deg); }
+   }
+   
+   /* ===== 8. Área ÚNICA de Exibição do Veículo (Visualizador Central com Borda Dourada) ===== */
+   /* Container principal onde os detalhes e controles do veículo selecionado são exibidos. */
+   #veiculo-display-area {
+       border: none;                       /* Sem borda própria, a borda estará no `.veiculo-renderizado`. */
+       padding: 0;                         /* Sem padding próprio. */
+       margin-bottom: 50px;                /* Espaço após esta área. */
+       background-color: transparent;      /* Fundo transparente, o conteúdo interno terá seu próprio fundo. */
+       min-height: 550px;                  /* Altura mínima para manter o layout estável mesmo vazio. */
+       /* Centraliza o conteúdo (placeholder ou .veiculo-renderizado) vertical e horizontalmente. */
+       display: flex;
+       justify-content: center;
+       align-items: center;
+   }
+   
+   /* Placeholder exibido quando nenhum veículo está selecionado. */
+   #veiculo-display-area .placeholder {
+       text-align: center;
+       color: var(--text-secondary);
+       padding: 80px 40px;                 /* Padding interno generoso. */
+       font-size: 1.3em;                   /* Texto ligeiramente maior. */
+       font-weight: 300;                   /* Texto leve. */
+       max-width: 450px;                   /* Limita a largura do placeholder. */
+       border: 1px solid var(--glass-border); /* Borda sutil. */
+       border-radius: var(--border-radius-elements); /* Cantos arredondados. */
+       background: transparent;            /* Sem fundo próprio. */
+       animation: none;                    /* Remove animações legadas. */
+   }
+   #veiculo-display-area .placeholder i { /* Ícone grande no placeholder */
+       display: block;                     /* Ícone em sua própria linha. */
+       font-size: 3.5em;                   /* Ícone bem grande. */
+       margin-bottom: 20px;                /* Espaço abaixo do ícone. */
+       opacity: 0.5;                       /* Ícone semi-transparente. */
+       color: var(--text-secondary);
+       text-shadow: none;
+       animation: none;
+   }
+   
+   /* Container do veículo renderizado - Aparece quando um veículo é selecionado. */
+   /* **Este é um elemento central da v1.1, com a borda dourada.** */
+   .veiculo-renderizado {
+       width: 100%;                        /* Ocupa toda a largura da área de display. */
+       /* Layout em Grid: Duas colunas em telas maiores (Imagem/Info | Ações/Manutenção). */
+       display: grid;
+       grid-template-columns: minmax(300px, 0.65fr) 1fr; /* Coluna esquerda (imagem) tem tamanho flexível mas mínimo, coluna direita (ações) ocupa o restante. */
+       gap: 45px;                          /* Espaço generoso entre as duas colunas. */
+   
+       /* **Estilo Chave v1.1: Borda e Destaque Dourado** */
+       border: 1px solid var(--accent-gold); /* Borda dourada proeminente. */
+       border-radius: var(--border-radius-elements); /* Cantos arredondados consistentes. */
+       padding: 25px;                      /* Padding interno para afastar o conteúdo da borda dourada. */
+       /* Leve brilho dourado externo para suavizar e destacar a borda. */
+       box-shadow: 0 0 15px 2px rgba(255, 183, 0, 0.15);
+       /* Fundo sutilmente diferente do glass-bg padrão para fazer esta área se destacar um pouco mais. */
+       background: rgba(5, 3, 10, 0.2);
+   
+       /* Animação de Entrada: Faz o card surgir suavemente de baixo para cima. */
+       animation: fadeInFromBottom 0.8s ease-out forwards;
+   }
+   /* Animação Keyframes */
+   @keyframes fadeInFromBottom {
+       from {
+           opacity: 0;
+           transform: translateY(20px); /* Começa deslocado para baixo. */
+       }
+       to {
+           opacity: 1;
+           transform: translateY(0); /* Termina na posição normal. */
+       }
+   }
+   /* Adaptação Responsiva: Em telas menores, muda para layout de coluna única. */
+   @media (max-width: 950px) {
+       .veiculo-renderizado {
+           grid-template-columns: 1fr;     /* Apenas uma coluna. */
+           gap: 35px;                      /* Reduz o espaço entre os elementos empilhados. */
+           padding: 20px;                  /* Reduz o padding interno. */
+       }
+   }
+   
+   /* ===== 9 & 10. Colunas, Cards e Componentes (Módulos de Interface Limpos) ===== */
+   /* Estiliza as colunas dentro do grid `.veiculo-renderizado` e os cards contidos nelas. */
+   
+   /* Colunas do Grid */
+   .coluna-imagem-info, .coluna-acoes-manutencao {
+       display: flex;
+       flex-direction: column;             /* Organiza os cards verticalmente dentro da coluna. */
+       gap: 35px;                          /* Espaço entre os cards na mesma coluna. */
+   }
+   
+   /* Card Genérico com Efeito de Vidro (Reutilizável) */
+   .glass-card {
+       /* Aplica o estilo base de glassmorphism definido nas variáveis. */
+       background: var(--glass-bg);
+       border: 1px solid var(--glass-border);
+       padding: 30px;                      /* Padding interno do card. */
+       border-radius: var(--border-radius-elements);
+       box-shadow: inset 0 0 8px var(--inner-shadow-light); /* Sombra interna sutil. */
+       backdrop-filter: blur(var(--backdrop-blur));
+       -webkit-backdrop-filter: blur(var(--backdrop-blur));
+       transition: background-color var(--transition-smooth), border-color var(--transition-smooth); /* Transição suave no hover. */
+   }
+   /* Efeito Hover no Card */
+   .glass-card:hover {
+       transform: none;                    /* Sem transformação no hover (simplificação v1.1). */
+       /* Leve mudança no fundo e borda para feedback visual. */
+       background: rgba(20, 18, 30, 0.65); /* Fundo roxo um pouco mais claro. */
+       border-color: rgba(224, 229, 240, 0.35); /* Borda um pouco mais opaca. */
+       box-shadow: inset 0 0 10px var(--inner-shadow-light); /* Sombra interna pode ficar ligeiramente mais intensa. */
+   }
+   
+   /* --- Conteúdo do Card de Imagem e Informações --- */
+   
+   /* Título do Veículo (dentro do card de imagem/info) */
+   .coluna-imagem-info .veiculo-titulo {
+       text-align: center;
+       color: var(--text-primary);
+       margin-bottom: 0;                   /* Remove margem padrão de H2/H3. */
+       font-size: 1.8em;
+       letter-spacing: 1px;
+       padding-bottom: 0;                  /* Remove padding padrão. */
+       border: none;                       /* Remove borda padrão. */
+       font-family: var(--font-family-body); /* Usa Poppins, não Orbitron, para clareza. */
+       font-weight: 600;                   /* Peso destacado. */
+   }
+   
+   /* Imagem do Veículo */
+   .veiculo-imagem {
+       max-width: 100%;                    /* Limita a largura ao container. */
+       width: auto;                        /* Mantém proporção. */
+       max-height: 250px;                  /* Limita a altura máxima. */
+       height: auto;                       /* Mantém proporção. */
+       display: block;                     /* Remove espaço extra abaixo da imagem. */
+       border-radius: 6px;                 /* Leve arredondamento. */
+       margin: 5px auto 25px auto;         /* Centraliza e adiciona margem vertical. */
+       border: none;
+       object-fit: contain;                /* Garante que a imagem inteira seja visível sem distorção. */
+       background-color: transparent;
+       filter: none;                       /* Sem filtros por padrão. */
+       transition: transform 0.4s ease-out; /* Transição suave para o efeito de zoom no hover. */
+   }
+   /* Efeito de Zoom na Imagem no Hover do Card */
+   .glass-card:hover .veiculo-imagem {
+       transform: scale(1.02);             /* Leve aumento de escala. */
+   }
+   
+   /* Container das Informações Textuais (Placa, Modelo, Status, etc.) */
+   .informacoes-veiculo {
+       width: 100%;
+       text-align: center;                 /* Centraliza todo o texto. */
+   }
+   /* Parágrafos de Informação Individual */
+   .informacoes-veiculo p {
+       margin: 12px 0;                     /* Espaçamento vertical entre as informações. */
+       font-size: 1em;
+       /* Alinha Label e Valor (ou ícone) centralizadamente */
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       gap: 10px;
+       color: var(--text-secondary);       /* Cor secundária por padrão. */
+   }
+   /* Label (Ex: "Placa:", "Modelo:") */
+   .info-label {
+       font-weight: 500;
+       color: var(--text-secondary);
+       text-transform: none;
+       font-size: 0.9em;
+       opacity: 1;
+   }
+   /* Valor do Status (Ex: "Ligado", "Desligado") */
+   .veiculo-status {
+       font-weight: 600;                   /* Destaca o status. */
+       font-size: 1.1em;                   /* Ligeiramente maior. */
+   }
+   /* Estilo Específico: Status Ligado */
+   .status-ligado {
+       color: var(--accent-gold);          /* Cor dourada. */
+       text-shadow: var(--glow-gold);      /* Brilho dourado. */
+   }
+   .status-ligado::before { /* Adiciona um ícone de círculo preenchido (Font Awesome) */
+       content: "\f111";                   /* Código unicode do ícone fas fa-circle. */
+       font-family: 'Font Awesome 6 Free';
+       font-weight: 900;                   /* Usa a versão sólida (filled) do ícone. */
+       margin-right: 8px;
+       font-size: 0.8em;                   /* Ícone ligeiramente menor que o texto. */
+       vertical-align: middle;             /* Alinha o ícone verticalmente. */
+   }
+   /* Estilo Específico: Status Desligado */
+   .status-desligado {
+       color: var(--text-secondary);       /* Cor secundária. */
+       text-shadow: none;                  /* Sem brilho. */
+   }
+   .status-desligado::before { /* Adiciona um ícone de círculo vazio (Font Awesome) */
+       content: "\f111";                   /* Código unicode do ícone far fa-circle. */
+       font-family: 'Font Awesome 6 Free';
+       font-weight: 400;                   /* Usa a versão regular (outline) do ícone. */
+       margin-right: 8px;
+       opacity: 0.7;                       /* Levemente transparente. */
+       font-size: 0.8em;
+       vertical-align: middle;
+   }
+   
+   /* Oculta Elementos Visuais Legados/Alternativos */
+   /* Esconde velocímetros ou barras gráficas que possam existir de outras versões ou implementações.
+      A informação será exibida textualmente ou por outros meios. */
+   .velocimetro { display: none; }
+   .barra-aceleracao { display: none; }
+   
+   /* Estilos para exibição textual de Velocidade/Aceleração (se o JS for adaptado) */
+   /* Prepara estilos caso a velocidade e aceleração sejam mostradas como texto simples. */
+   .informacoes-veiculo .velocidade-texto,
+   .informacoes-veiculo .aceleracao-texto {
+       font-size: 1.1em;
+       font-weight: 500;
+   }
+   .velocidade-valor, .aceleracao-valor { /* O valor numérico */
+       color: var(--text-primary);         /* Cor primária para destaque. */
+       font-weight: 600;                   /* Negrito. */
+       margin-left: 5px;                   /* Pequeno espaço após o label. */
+   }
+   
+   /* Botão Excluir Veículo (dentro do card de info) */
+   /* Estilo específico para o botão de exclusão posicionado neste card. */
+   .btn-excluir-veiculo {
+       /* Estilo Outline Vermelho */
+       background: transparent;
+       color: var(--accent-danger);
+       border: 1px solid var(--accent-danger);
+       /* Dimensionamento e Espaçamento */
+       padding: 10px 20px;
+       margin-top: 25px;                   /* Espaço acima do botão. */
+       border-radius: var(--border-radius-elements);
+       /* Tipografia e Transição */
+       font-weight: 500;
+       letter-spacing: 0.5px;
+       text-transform: uppercase;
+       font-size: 0.9em;                   /* Botão ligeiramente menor. */
+       transition: all var(--transition-smooth);
+       box-shadow: none;
+       cursor: pointer;
+   }
+   .btn-excluir-veiculo:hover {
+       background: var(--accent-danger);   /* Fundo vermelho sólido no hover. */
+       color: var(--text-on-danger);       /* Texto branco para contraste. */
+       box-shadow: var(--glow-danger);     /* Adiciona brilho vermelho. */
+       transform: none;
+   }
+   
+   /* --- Estilos Específicos para Ícones em Títulos de Cards --- */
+   /* Personaliza a cor/brilho de ícones em títulos H3/H4 dependendo do contexto do card. */
+   .edicao-veiculo h3 i { color: var(--accent-info); text-shadow: var(--glow-info); } /* Card de Edição: Ícone Azul com brilho. */
+   .acoes-veiculo h3 i { color: var(--accent-light); text-shadow: none; } /* Card de Ações: Ícone Claro sem brilho. */
+   .agendamento-section h4 i { color: var(--accent-info); } /* Seção Agendamento: Ícone Azul. */
+   .historico-section h4 i { color: var(--text-secondary); } /* Seção Histórico: Ícone Secundário. */
+   
+   /* --- Layout do Card de Ações do Veículo --- */
+   /* Organiza os botões de ação (Ligar, Buzinar, etc.) em um grid responsivo. */
+   .acoes-veiculo {
+       display: grid;
+       /* Cria colunas que se ajustam automaticamente à largura disponível,
+          com um tamanho mínimo de 120px e máximo flexível (1fr). */
+       grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+       gap: 15px;                          /* Espaço entre os botões no grid. */
+   }
+   /* Título H3 dentro do card de Ações */
+   .acoes-veiculo h3 {
+       grid-column: 1 / -1;                /* Faz o título ocupar todas as colunas do grid. */
+       text-align: center;                 /* Centraliza o título sobre os botões. */
+       margin-bottom: 25px;                /* Mais espaço abaixo do título. */
+       border: none;                       /* Remove a borda esquerda padrão de H3. */
+       padding: 0;                         /* Remove o padding padrão de H3. */
+       font-size: 1.5em;                   /* Tamanho ligeiramente reduzido para H3 neste contexto. */
+   }
+   /* Garante que os botões dentro do grid não tenham margem extra. */
+   .acoes-veiculo button {
+       margin: 0;
+   }
+   
+   /* ===== 11. Seção Adicionar Veículo (Formulário Limpo) ===== */
+   /* Estiliza a área que contém o formulário para adicionar um novo veículo.
+      Opta por um visual minimalista, sem o fundo de vidro ou bordas complexas dos cards. */
+   #add-veiculo-section {
+       background: none;
+       border: none;
+       padding: 10px 0;                    /* Padding vertical mínimo. */
+       border-radius: 0;
+       box-shadow: none;
+       backdrop-filter: none;
+       -webkit-backdrop-filter: none;
+   }
+   /* Título H2 da seção de adicionar veículo */
+   #add-veiculo-section h2 {
+       text-align: center;
+       margin-bottom: 1.5em;
+       color: var(--text-primary);
+   }
+   #add-veiculo-section h2 i { /* Ícone no título */
+       color: var(--accent-gold);
+       text-shadow: var(--glow-gold);
+   }
+   
+   /* ===== 12. Notificações e Alertas (Minimalista) ===== */
+   /* Define o estilo para áreas que exibem mensagens de feedback ao usuário (notificações gerais e alertas de CNH). */
+   #notificacoes-area, #cnh-alertas-area {
+       /* Visibilidade e Posicionamento */
+       display: none;                      /* Oculto por padrão, exibido via JS. */
+       margin: 0 auto 30px auto;           /* Centralizado horizontalmente, com margem inferior. */
+       max-width: 98%;                     /* Largura quase total, mas com pequena margem. */
+       position: relative;                 /* Para posicionar o pseudo-elemento ::before. */
+   
+       /* Aparência Minimalista com Destaque Lateral */
+       padding: 20px 25px;                 /* Padding interno. */
+       border-radius: var(--border-radius-elements);
+       border: 1px solid var(--glass-border); /* Borda geral sutil. */
+       border-left-width: 4px;             /* **Destaque:** Borda esquerda mais espessa. */
+       border-left-style: solid;
+       /* A cor da borda esquerda (`border-left-color`) e a cor do texto (`color`) são definidas especificamente abaixo para cada tipo. */
+       background: none;                   /* Sem fundo próprio. */
+       box-shadow: none;
+       backdrop-filter: none;
+       -webkit-backdrop-filter: none;
+   }
+   
+   /* Efeito de Brilho Suave na Borda Lateral */
+   #notificacoes-area::before, #cnh-alertas-area::before {
+       content: '';
+       position: absolute;
+       left: -2px;                         /* Posicionado ligeiramente fora da borda real. */
+       top: 10%;                           /* Cobre 80% da altura. */
+       bottom: 10%;
+       width: 6px;                         /* Largura do brilho. */
+       border-radius: 3px;                 /* Bordas suaves no brilho. */
+       background-color: currentColor;     /* Usa a cor definida no elemento pai (azul para info, vermelho para danger). */
+       filter: blur(5px);                  /* Desfoque para criar o efeito de brilho suave. */
+       opacity: 0.7;                       /* Semi-transparente. */
+       z-index: -1;                        /* Fica atrás do conteúdo. */
+       animation: none;
+   }
+   
+   /* Título (H4) dentro das áreas de notificação/alerta */
+   #notificacoes-area h4, #cnh-alertas-area h4 {
+       margin-top: 0;
+       margin-bottom: 15px;
+       font-size: 1.15em;
+       font-weight: 600;                   /* Título destacado. */
+       display: flex;                      /* Alinha ícone e texto. */
+       align-items: center;
+       gap: 10px;
+       /* A cor é definida especificamente abaixo. */
+   }
+   
+   /* Estilos Específicos para Notificações (Informativas) */
+   #notificacoes-area {
+       border-left-color: var(--accent-info); /* Borda esquerda Azul. */
+       color: var(--accent-info);          /* Cor padrão do texto da área (usada pelo ::before). */
+   }
+   #notificacoes-area h4 { color: var(--accent-info); } /* Cor do título. */
+   #notificacoes-area h4 i { color: var(--accent-info); } /* Cor do ícone no título. */
+   
+   /* Estilos Específicos para Alertas CNH (Perigo/Atenção) */
+   #cnh-alertas-area {
+       border-left-color: var(--accent-danger); /* Borda esquerda Vermelha. */
+       color: var(--accent-danger);         /* Cor padrão do texto da área (usada pelo ::before). */
+   }
+   #cnh-alertas-area h4 { color: var(--accent-danger); } /* Cor do título. */
+   #cnh-alertas-area h4 i { color: var(--accent-danger); } /* Cor do ícone no título. */
+   
+   /* Lista de Itens (ul) dentro das áreas */
+   #notificacoes-area ul, #cnh-alertas-area ul {
+       list-style: none;                   /* Remove marcadores padrão. */
+       padding: 0;
+       margin: 0;
+   }
+   
+   /* Itens Individuais da Lista (li) */
+   #notificacoes-area li, #cnh-alertas-area li {
+       padding: 10px 5px;                  /* Padding vertical e pequeno padding horizontal. */
+       border-bottom: 1px solid var(--glass-border); /* Linha separadora sutil entre itens. */
+       font-size: 0.95em;                  /* Texto ligeiramente menor. */
+       color: var(--text-secondary);       /* Cor secundária por padrão. */
+       transition: color var(--transition-smooth); /* Transição suave da cor no hover. */
+   }
+   #notificacoes-area li:last-child,
+   #cnh-alertas-area li:last-child {
+       border-bottom: none;                /* Remove a borda do último item. */
+   }
+   #notificacoes-area li:hover,
+   #cnh-alertas-area li:hover {
+       background-color: transparent;      /* Sem mudança de fundo no hover. */
+       color: var(--text-primary);         /* Texto fica primário no hover para indicar foco. */
+   }
+   /* Texto em Negrito dentro dos Itens */
+   #notificacoes-area li strong,
+   #cnh-alertas-area li strong {
+       color: var(--text-primary);         /* Destaca partes importantes com a cor primária. */
+       font-weight: 500;
+   }
+   
+   /* ===== 13. Formulários (Interface Direta) ===== */
+   /* Estiliza todos os elementos de formulário para garantir consistência visual com o tema e boa usabilidade. */
+   
+   /* Labels dos Campos */
+   label {
+       display: block;                     /* Coloca o label acima do campo. */
+       margin-bottom: 8px;                 /* Espaço entre o label e o campo. */
+       font-weight: 400;
+       font-size: 0.9em;                   /* Label ligeiramente menor. */
+       color: var(--text-secondary);       /* Cor secundária. */
+       text-transform: none;
+       letter-spacing: 0.5px;
+       opacity: 1;
+   }
+   
+   /* Estilo Base Comum para Inputs, Textarea, Select */
+   input[type="text"], input[type="number"], input[type="file"], input[type="date"], input[type="time"],
+   textarea, select {
+       /* Dimensionamento e Box Model */
+       width: 100%;                        /* Ocupa toda a largura disponível. */
+       padding: 12px 15px;                 /* Padding interno para conforto. */
+       margin-bottom: 20px;                /* Espaço abaixo de cada campo. */
+       border: 1px solid var(--glass-border); /* Borda padrão sutil. */
+       border-radius: var(--border-radius-elements); /* Cantos arredondados. */
+       outline: none;                      /* Remove o outline padrão do navegador. */
+       box-shadow: none;                   /* Sem sombra por padrão. */
+   
+       /* Aparência Visual */
+       background-color: rgba(5, 3, 10, 0.4); /* Fundo escuro semi-transparente, sutilmente diferente do glass-bg. */
+       color: var(--text-primary);         /* Cor do texto digitado. */
+       font-size: 1em;                     /* Tamanho de fonte igual ao corpo. */
+       font-family: inherit;               /* Herda a fonte do body (Poppins). */
+   
+       /* Transições para Estado de Foco */
+       transition: border-color var(--transition-smooth), box-shadow var(--transition-smooth), background-color var(--transition-smooth);
+   }
+   
+   /* Placeholder Text */
+   input::placeholder, textarea::placeholder {
+       color: var(--text-secondary);       /* Cor do placeholder. */
+       opacity: 0.5;                       /* Placeholder mais sutil. */
+   }
+   
+   /* Estado de Foco (:focus) */
+   input:focus, textarea:focus, select:focus {
+       border-color: var(--accent-gold);   /* **Destaque:** Borda muda para dourado ao focar. */
+       background-color: rgba(10, 8, 15, 0.5); /* Fundo escurece ligeiramente no foco. */
+       /* Adiciona um 'outline' visual usando box-shadow dourado, mais integrado ao tema. */
+       box-shadow: 0 0 0 3px rgba(255, 183, 0, 0.25);
+   }
+   
+   /* Estilos Específicos por Tipo de Campo */
+   
+   /* Input[type="file"] */
+   input[type="file"] {
+       padding: 10px 15px;                 /* Ajuste de padding. */
+       cursor: pointer;                    /* Indica que é clicável. */
+   }
+   /* Estilização do Botão Interno do Input de Arquivo (WebKit/Blink) */
+   input[type="file"]::-webkit-file-upload-button {
+       background: var(--glass-border);    /* Fundo baseado na cor da borda. */
+       border: none;
+       padding: 6px 12px;                  /* Padding do botão interno. */
+       border-radius: 5px;                 /* Arredondamento do botão interno. */
+       color: var(--text-secondary);
+       cursor: pointer;
+       margin-right: 10px;                 /* Espaço entre o botão e o texto "nenhum arquivo...". */
+       transition: all var(--transition-smooth);
+       font-weight: 400;
+   }
+   input[type="file"]::-webkit-file-upload-button:hover {
+       background: rgba(224, 229, 240, 0.3); /* Fundo clareia no hover. */
+       color: var(--text-primary);
+   }
+   
+   /* Textarea */
+   textarea {
+       resize: vertical;                   /* Permite redimensionamento apenas vertical. */
+       min-height: 120px;                  /* Altura mínima inicial. */
+       line-height: 1.6;                   /* Espaçamento de linha para texto longo. */
+   }
+   
+   /* Select (Dropdown) */
+   select {
+       /* Remove a aparência padrão do sistema operacional. */
+       appearance: none;
+       -webkit-appearance: none;
+       /* Adiciona uma seta personalizada usando SVG embutido como background. */
+       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='%239ca7c1' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E"); /* Seta cinza-azulada */
+       background-repeat: no-repeat;
+       background-position: right 15px center; /* Posiciona a seta à direita. */
+       background-size: 18px 18px;         /* Tamanho da seta. */
+       padding-right: 45px;                /* Adiciona padding à direita para não sobrepor o texto com a seta. */
+   }
+   
+   /* Layout de Formulário em Grid */
+   .form-grid {
+       display: grid;
+       /* Cria colunas responsivas: ajusta automaticamente o número de colunas
+          com base na largura disponível, cada uma com no mínimo 250px. */
+       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+       /* Espaçamento vertical e horizontal entre os campos do grid. */
+       gap: 30px 25px;
+   }
+   
+   /* Grupo Input + Botão Lado a Lado */
+   /* Para casos como um input de número e um botão de "Aplicar" juntos. */
+   .input-button-group {
+       display: flex;
+       align-items: flex-end;              /* Alinha pela base do input e botão. */
+       gap: 15px;                          /* Espaço entre o input e o botão. */
+       margin-bottom: 20px;                /* Margem padrão abaixo do grupo. */
+   }
+   .input-button-group > div { flex-grow: 1; } /* O container do input ocupa o espaço restante. */
+   .input-button-group input[type="number"] { margin-bottom: 0; } /* Remove margem do input dentro do grupo. */
+   .input-button-group button { margin-bottom: 0; flex-shrink: 0; } /* Remove margem e impede que o botão encolha. */
+   
+   /* Pré-visualização da Imagem (Input File) */
+   .imagem-preview-container {
+       /* Container que mostra a imagem selecionada ou um placeholder. */
+       margin-top: 15px;                   /* Espaço acima. */
+       margin-bottom: 25px;                /* Espaço abaixo. */
+       text-align: center;
+       min-height: 100px;                  /* Altura mínima para o placeholder. */
+       background-color: rgba(5, 3, 10, 0.3); /* Fundo escuro sutil. */
+       border: 1px dashed var(--glass-border); /* Borda tracejada indica área de drop ou preview. */
+       border-radius: var(--border-radius-elements);
+       padding: 15px;
+       /* Centraliza o conteúdo (imagem ou texto) vertical e horizontalmente. */
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
+       position: relative;
+       overflow: hidden;
+   }
+   .imagem-preview-container::after { display: none; } /* Limpeza legado. */
+   
+   /* A Imagem de Preview (`<img>`) */
+   .imagem-preview {
+       max-width: 180px;                   /* Largura máxima do preview. */
+       max-height: 100px;                  /* Altura máxima do preview. */
+       display: none;                      /* Escondida por padrão. */
+       margin-bottom: 10px;                /* Espaço abaixo da imagem, antes do texto. */
+       border-radius: 4px;                 /* Leve arredondamento. */
+       object-fit: contain;                /* Mostra a imagem inteira sem distorção. */
+       filter: none;
+       transition: opacity 0.5s ease-in-out; /* Transição suave ao aparecer. */
+       animation: none;
+   }
+   /* Mostra a imagem quando ela tem um `src` válido (não vazio e não '#'). */
+   .imagem-preview[src]:not([src="#"]) {
+       display: block;                     /* Torna visível. */
+       opacity: 1;
+   }
+   
+   /* Texto Pequeno no Preview Container (Instruções/Avisos) */
+   .imagem-preview-container small {
+       font-size: 0.85em;
+       color: var(--text-secondary);
+       display: block;
+   }
+   .imagem-preview-container small.warning-text { /* Texto de aviso (ex: formato inválido) */
+       color: var(--accent-danger);        /* Cor vermelha de perigo. */
+       font-weight: 400;
+       margin-top: 8px;                    /* Espaço acima do aviso. */
+       text-shadow: none;
+   }
+   .imagem-preview-container small.warning-text i { margin-right: 5px; } /* Ícone no aviso. */
+   
+   /* ===== 14. Botões (Controles Focados) ===== */
+   /* Define os estilos base e variações para todos os botões da interface. */
+   
+   /* Estilo Padrão/Primário (Botão Dourado Sólido) */
+   /* Usado para as ações mais importantes ou confirmativas. */
+   button {
+       /* Aparência Base */
+       padding: 12px 25px;                 /* Padding interno generoso. */
+       margin: 8px;                        /* Margem externa padrão (pode ser sobrescrita). */
+       border: 1px solid var(--accent-gold); /* Borda dourada. */
+       border-radius: var(--border-radius-elements); /* Cantos arredondados. */
+       background: var(--accent-gold);     /* Fundo dourado sólido. */
+       color: var(--text-on-accent);       /* Texto preto para contraste. */
+       cursor: pointer;
+       transition: all var(--transition-smooth); /* Transição suave para todos os estados. */
+   
+       /* Tipografia e Alinhamento Interno */
+       font-size: 1em;
+       font-weight: 600;                   /* Negrito para destaque. */
+       letter-spacing: 0.8px;
+       font-family: var(--font-family-body);
+       text-transform: uppercase;          /* Texto em maiúsculas. */
+       /* Alinha ícone (se houver) e texto centralizadamente. */
+       display: inline-flex;
+       align-items: center;
+       justify-content: center;
+       gap: 10px;                          /* Espaço entre ícone e texto. */
+       line-height: 1.2;                   /* Ajuste fino de alinhamento vertical. */
+   
+       /* Efeitos e Posicionamento */
+       text-shadow: none;
+       box-shadow: none;                   /* Sem sombra por padrão. */
+       position: relative;                 /* Para pseudo-elementos ou efeitos futuros. */
+       overflow: hidden;                   /* Esconde overflow de efeitos. */
+   }
+   button::before { display: none; } /* Limpeza legado. */
+   
+   /* Estado Hover (Botão Primário) */
+   button:hover {
+       /* Clareia ligeiramente o fundo e a borda para feedback. */
+       background: color-mix(in srgb, var(--accent-gold) 85%, white);
+       border-color: color-mix(in srgb, var(--accent-gold) 85%, white);
+       color: var(--text-on-accent);       /* Mantém texto preto. */
+       transform: none;                    /* Sem transformação no hover. */
+       box-shadow: var(--glow-gold);       /* Adiciona o brilho dourado. */
+   }
+   
+   /* Estado Active (Pressionado - Botão Primário) */
+   button:active {
+       /* Escurece ligeiramente o fundo e a borda. */
+       background: color-mix(in srgb, var(--accent-gold) 70%, black);
+       border-color: color-mix(in srgb, var(--accent-gold) 70%, black);
+       transform: scale(0.98);             /* Efeito sutil de "pressionar". */
+       box-shadow: none;                   /* Remove o brilho durante o clique. */
+   }
+   
+   /* Estado Desabilitado (Botão Primário e Outros) */
+   button:disabled {
+       background: #333;                   /* Fundo cinza escuro. */
+       border-color: #444;                 /* Borda cinza mais escura. */
+       color: #777;                        /* Texto cinza claro. */
+       opacity: 0.6;                       /* Semi-transparente para indicar inatividade. */
+       cursor: not-allowed;                /* Cursor indica que não é clicável. */
+       transform: none;                    /* Sem transformações. */
+       box-shadow: none;                   /* Sem brilho. */
+       text-shadow: none;
+   }
+   button:disabled:hover { /* Garante que o hover não tenha efeito no botão desabilitado. */
+       background: #333;
+       border-color: #444;
+       box-shadow: none;
+   }
+   
+   /* --- Variações de Estilo de Botão --- */
+   
+   /* Botões Secundários (Estilo "Outline Claro") */
+   /* Usados para ações comuns do veículo ou ações menos críticas.
+      Identificados por `data-acao` ou classes específicas. */
+   button[data-acao="ligar"], button[data-acao="acelerar"], button[data-acao="frear"],
+   button[data-acao="buzinar"], button[data-acao="desligar"],
+   .agendar-manutencao-btn, /* Botão específico para agendar */
+   button[data-acao="ativarTurbo"], button[data-acao="carregar"] /* Exemplos adicionais */
+   {
+       background: transparent;            /* Fundo transparente. */
+       border: 1px solid var(--accent-light); /* Borda na cor clara. */
+       color: var(--accent-light);         /* Texto na cor clara. */
+       box-shadow: none;
+   }
+   /* Hover (Botões Secundários) */
+   button[data-acao="ligar"]:hover, button[data-acao="acelerar"]:hover, button[data-acao="frear"]:hover,
+   button[data-acao="buzinar"]:hover, button[data-acao="desligar"]:hover,
+   .agendar-manutencao-btn:hover,
+   button[data-acao="ativarTurbo"]:hover, button[data-acao="carregar"]:hover
+   {
+       background: var(--accent-light);    /* Fundo fica sólido claro. */
+       border-color: var(--accent-light);
+       color: #111;                        /* Texto escuro para contraste com fundo claro. */
+       box-shadow: var(--glow-light);      /* Adiciona brilho claro. */
+   }
+   /* Active (Botões Secundários) */
+   button[data-acao="ligar"]:active, button[data-acao="acelerar"]:active, button[data-acao="frear"]:active,
+   button[data-acao="buzinar"]:active, button[data-acao="desligar"]:active,
+   .agendar-manutencao-btn:active,
+   button[data-acao="ativarTurbo"]:active, button[data-acao="carregar"]:active
+   {
+       /* Fundo e borda escurecem. */
+        background: color-mix(in srgb, var(--accent-light) 80%, black);
+        border-color: color-mix(in srgb, var(--accent-light) 80%, black);
+        color: #ddd;                        /* Texto claro novamente. */
+        transform: scale(0.98);             /* Efeito de pressionar. */
+        box-shadow: none;
+   }
+   
+   /* Botão Excluir (Estilo "Outline Perigo") */
+   /* Reitera a definição para garantir consistência caso seja usado fora do card de info. */
+   .btn-excluir-veiculo {
+       background: transparent;
+       border: 1px solid var(--accent-danger);
+       color: var(--accent-danger);
+       padding: 10px 20px;
+       margin-top: 25px; /* Pode precisar ser ajustado dependendo do contexto */
+       border-radius: var(--border-radius-elements);
+       transition: all var(--transition-smooth);
+       box-shadow: none;
+       font-weight: 500;
+       letter-spacing: 0.5px;
+       text-transform: uppercase;
+       font-size: 0.9em;
+   }
+   .btn-excluir-veiculo:hover {
+       background: var(--accent-danger);
+       color: var(--text-on-danger);       /* Texto branco. */
+       box-shadow: var(--glow-danger);     /* Brilho vermelho. */
+       transform: none;
+   }
+   
+   /* Botão Limpar Histórico (Estilo "Outline Secundário/Cinza") */
+   /* Usado para ações menos comuns ou de baixa prioridade. */
+   .btn-limpar-historico {
+       background: transparent;
+       border: 1px solid var(--text-secondary); /* Borda na cor secundária. */
+       color: var(--text-secondary);         /* Texto na cor secundária. */
+       font-size: 0.8em;                   /* Botão pequeno. */
+       padding: 6px 12px;                  /* Padding reduzido. */
+       margin: 0;                          /* Remove margem padrão. */
+       box-shadow: none;
+       font-weight: 500;
+       letter-spacing: 0.5px;
+   }
+   .btn-limpar-historico:hover {
+       background: var(--text-secondary);  /* Fundo cinza sólido no hover. */
+       color: var(--color-void-deep);      /* Texto escuro para contraste. */
+       box-shadow: none;
+       transform: none;
+   }
+   .btn-limpar-historico i { font-size: 0.9em; margin-right: 5px; } /* Ícone dentro do botão. */
+   
+   /* ===== 15. Histórico e Agendamentos (Logs Minimalistas) ===== */
+   /* Estiliza listas que exibem logs de eventos ou agendamentos futuros. */
+   
+   /* Container da Lista (UL) */
+   .historico-section ul, #agendamentos-futuros-lista ul {
+       list-style: none;                   /* Remove marcadores de lista. */
+       padding-left: 0;                    /* Remove padding padrão da lista. */
+       margin-top: 20px;                   /* Espaço acima da lista. */
+       max-height: 280px;                  /* Altura máxima antes de ativar a rolagem. */
+       overflow-y: auto;                   /* Habilita barra de rolagem vertical se necessário. */
+       padding-right: 8px;                 /* Espaço à direita para a barra de rolagem não colar no texto. */
+   }
+   
+   /* Estilização da Barra de Rolagem (WebKit/Blink) */
+   /* Melhora a aparência da barra de rolagem para se integrar ao tema escuro. */
+   ::-webkit-scrollbar { width: 8px; } /* Largura da barra. */
+   ::-webkit-scrollbar-track { background: rgba(5, 3, 10, 0.5); border-radius: 4px; } /* Fundo da trilha. */
+   ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 4px; border: none; } /* A parte móvel (thumb). */
+   ::-webkit-scrollbar-thumb:hover { background: rgba(224, 229, 240, 0.4); } /* Thumb clareia no hover. */
+   
+   /* Itens Individuais da Lista (LI) */
+   .historico-section li, #agendamentos-futuros-lista li {
+       /* Aparência Minimalista */
+       background-color: transparent;
+       border: none;
+       border-bottom: 1px solid var(--glass-border); /* Linha separadora sutil. */
+       padding: 12px 5px;                  /* Padding vertical e pequeno horizontal. */
+       margin-bottom: 10px;                /* Espaço entre itens. */
+       border-radius: 0;                   /* Sem arredondamento nos itens individuais. */
+       font-size: 0.95em;                  /* Texto ligeiramente menor. */
+       color: var(--text-secondary);       /* Cor secundária por padrão. */
+       position: relative;                 /* Para a borda esquerda no hover. */
+       border-left: 3px solid transparent; /* Borda esquerda invisível por padrão. */
+       /* Transição suave para o hover (cor do texto e borda esquerda). */
+       transition: border-left-color var(--transition-smooth), color var(--transition-smooth);
+   }
+   
+   /* Efeito Hover nos Itens da Lista */
+   .historico-section li:hover, #agendamentos-futuros-lista li:hover {
+       background-color: transparent;
+       transform: none;                    /* Sem transformação. */
+       /* **Destaque Hover:** Borda esquerda aparece com a cor dourada (padrão). */
+       border-left-color: var(--accent-gold);
+       box-shadow: none;
+       color: var(--text-primary);         /* Texto fica primário para indicar foco. */
+   }
+   
+   /* Texto em Negrito (`<strong>`) dentro dos Itens */
+   .historico-section li strong, #agendamentos-futuros-lista li strong {
+       color: var(--text-primary);         /* Destaca partes importantes. */
+       font-weight: 500;
+   }
+   
+   /* Seção Específica: Agendamentos Futuros */
+   /* Pode ser um `.glass-card` ou ter estilo similar. */
+   #agendamentos-futuros {
+       margin-top: 40px;                   /* Espaço acima desta seção. */
+       border-left: 4px solid var(--accent-gold); /* Mantém a barra dourada de H3, se for um card direto. */
+       position: relative;
+       /* Herda ou define estilos de .glass-card */
+       background: var(--glass-bg);
+       border: 1px solid var(--glass-border);
+       padding: 30px;
+       border-radius: var(--border-radius-elements);
+       box-shadow: inset 0 0 8px var(--inner-shadow-light);
+   }
+   #agendamentos-futuros::before { display: none; } /* Limpeza legado. */
+   #agendamentos-futuros h3 { color: var(--text-primary); border: none; padding: 0; } /* Estilo do título H3. */
+   #agendamentos-futuros h3 i { color: var(--accent-gold); text-shadow: var(--glow-gold); } /* Ícone no título. */
+   
+   /* Placeholder na lista de agendamentos (ex: "Nenhum agendamento") */
+   #agendamentos-futuros-lista p {
+       color: var(--text-secondary);
+       font-style: italic;
+       font-size: 1em;
+       padding: 10px 0;
+   }
+   /* Borda inferior dos itens de agendamento um pouco mais sutil. */
+   #agendamentos-futuros-lista li {
+       border-bottom-color: rgba(224, 229, 240, 0.15);
+   }
+   /* Hover Específico para Itens de Agendamento */
+   #agendamentos-futuros-lista li:hover {
+       border-left-color: var(--accent-info); /* **Diferença:** Borda esquerda fica azul (info) no hover, em vez de dourada. */
+   }
+   
+   /* ====== 16. Ajustes Finais e Responsividade ====== */
+   /* Media Queries para adaptar o layout a diferentes tamanhos de tela, garantindo boa usabilidade em desktops, tablets e smartphones. */
+   
+   /* Telas Médias (Tablets Maiores / Laptops Pequenos) - max-width: 1024px */
+   @media (max-width: 1024px) {
+       /* Ajusta espaçamentos principais e tamanhos de fonte. */
+       #container { padding: 40px 50px; }
+       h1 { font-size: 2.5em; }
+       h2 { font-size: 1.9em; }
+       /* Ajusta a área do veículo renderizado */
+       .veiculo-renderizado { gap: 40px; padding: 20px; }
+   }
+   
+   /* Telas Pequenas (Tablets) - max-width: 768px */
+   @media (max-width: 768px) {
+       /* Reduz espaçamentos gerais para otimizar espaço vertical. */
+       body { padding: 25px; }
+       #container { padding: 30px 30px; margin: 40px auto; }
+       /* Reduz tamanhos de fonte para caber melhor. */
+       h1 { font-size: 2.2em; }
+       h2 { font-size: 1.7em; }
+       h3 { font-size: 1.4em; }
+       /* Ajusta navegação por abas e formulários. */
+       #abas-navegacao button { padding: 14px 20px; font-size: 1em; margin: 0 5px; }
+       .form-grid { grid-template-columns: 1fr; gap: 25px; } /* Grid de formulário passa a ter coluna única. */
+       .glass-card { padding: 25px; } /* Menos padding nos cards. */
+       button { padding: 11px 22px; font-size: 0.95em; } /* Botões ligeiramente menores. */
+       /* Grupo Input+Botão empilha verticalmente. */
+       .input-button-group { flex-direction: column; align-items: stretch; gap: 15px; }
+       .input-button-group button { width: 100%; } /* Botão ocupa largura total. */
+       /* Reduz a intensidade do desfoque para performance ou preferência visual. */
+       :root { --backdrop-blur: 8px; }
+       .veiculo-renderizado { padding: 15px; } /* Menos padding na área do veículo. */
+   }
+   
+   /* Telas Muito Pequenas (Smartphones) - max-width: 480px */
+   @media (max-width: 480px) {
+       /* Reduz drasticamente os espaçamentos e tamanhos para caber em telas verticais. */
+       body { padding: 15px; }
+       #container { padding: 25px 15px; margin: 25px auto; }
+       /* Reduz ainda mais os tamanhos de fonte. */
+       h1 { font-size: 1.8em; letter-spacing: 2px; }
+       h1 i { margin-right: 15px; }
+       h2 { font-size: 1.5em; gap: 12px; }
+       h3 { font-size: 1.3em; padding-left: 10px; border-left-width: 3px;}
+       h4 { font-size: 1.1em; }
+       /* Navegação por Abas empilha verticalmente. */
+       #abas-navegacao { flex-direction: column; gap: 10px; padding-bottom: 15px; margin-bottom: 35px;}
+       #abas-navegacao button { width: 100%; margin: 0; padding: 12px; font-size: 1em; }
+       /* Área do veículo (já em coluna única) recebe menos padding/gap. */
+       .veiculo-renderizado { grid-template-columns: 1fr; gap: 25px; padding: 10px; }
+       .coluna-imagem-info .veiculo-titulo { font-size: 1.5em; }
+       /* Botões ficam menores. */
+       button { padding: 10px 18px; font-size: 0.9em; gap: 8px; }
+       .glass-card { padding: 20px; }
+       /* Ajusta o placeholder da área do veículo. */
+       #veiculo-display-area .placeholder { padding: 60px 20px; font-size: 1.1em; }
+       #veiculo-display-area .placeholder i { font-size: 3em; }
+       /* Ajusta padding e fonte de elementos de formulário. */
+       input, select, textarea { padding: 10px 12px; margin-bottom: 18px; font-size: 0.95em;}
+       select { background-position: right 12px center; background-size: 16px 16px; padding-right: 40px; } /* Ajusta seta do select. */
+       /* Ajusta preview de imagem e listas. */
+       .imagem-preview { max-width: 160px; max-height: 90px; }
+       .historico-section ul, #agendamentos-futuros-lista ul { max-height: 240px; } /* Menor altura para listas scrolláveis. */
+       /* Reduz ainda mais o desfoque. */
+       :root { --backdrop-blur: 6px; }
+   }
